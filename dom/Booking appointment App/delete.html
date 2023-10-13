@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title>
+</head>
+<body>
+    <h1>Contact List</h1>
+    <div id="contacts">
+        <!-- Contacts will be displayed here -->
+    </div>
+    <script>
+        // Sample list of contacts with names, emails, and contact numbers
+        let contacts = [
+            { id: 1, name: "Saransh", email: "Saransh@example.com", phone: "1234567890" },
+            { id: 2, name: "Isha", email: "Isha@example.com", phone: "9876543210" },
+            // Add more contacts here
+        ];
+
+        // Function to display contacts in the UI
+        function displayContacts() {
+            const contactsDiv = document.getElementById("contacts");
+
+            // Clear existing contacts
+            contactsDiv.innerHTML = "";
+
+            // Display each contact with name, email, contact number, and a "Delete" button
+            contacts.forEach(contact => {
+                const contactDiv = document.createElement("div");
+                contactDiv.className = "contact";
+                contactDiv.innerHTML = `
+                    <span>Name: ${contact.name}</span><br>
+                    <span>Email: ${contact.email}</span><br>
+                    <span>Contact Number: ${contact.phone}</span><br>
+                    <button class="delete-btn" data-id="${contact.id}">Delete</button>
+                `;
+                contactsDiv.appendChild(contactDiv);
+            });
+
+            // Attach event listener to "Delete" buttons
+            const deleteButtons = document.querySelectorAll(".delete-btn");
+            deleteButtons.forEach(button => {
+                button.addEventListener("click", deleteContact);
+            });
+        }
+
+        // Function to delete a contact
+        function deleteContact(event) {
+            const contactID = event.target.getAttribute("data-id");
+            // Filter out the contact with the specified ID
+            contacts = contacts.filter(contact => contact.id != contactID);
+            displayContacts(); // Update the UI
+        }
+
+        // Initialize the page
+        displayContacts();
+
+    </script>
+</body>
+</html>

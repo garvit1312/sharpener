@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title>
+</head>
+<body>
+    <h1>Contact List</h1>
+    <div id="contacts">
+        <!-- Contacts will be displayed here -->
+    </div>
+    <script>
+        // Sample list of contacts with names, emails, and contact numbers
+        let contacts = [
+            { id: 1, name: "John Doe", email: "john.doe@example.com", phone: "123-456-7890" },
+            { id: 2, name: "Jane Smith", email: "jane.smith@example.com", phone: "987-654-3210" },
+            // Add more contacts here
+        ];
+
+        // Function to display contacts in the UI
+        function displayContacts() {
+            const contactsDiv = document.getElementById("contacts");
+
+            // Clear existing contacts
+            contactsDiv.innerHTML = "";
+
+            // Display each contact with name, email, contact number, "Edit," and "Delete" buttons
+            contacts.forEach(contact => {
+                const contactDiv = document.createElement("div");
+                contactDiv.className = "contact";
+                contactDiv.innerHTML = `
+                    <span>Name: <span id="name-${contact.id}">${contact.name}</span></span><br>
+                    <span>Email: <span id="email-${contact.id}">${contact.email}</span></span><br>
+                    <span>Contact Number: <span id="phone-${contact.id}">${contact.phone}</span></span><br>
+                    <button class="edit-btn" data-id="${contact.id}">Edit</button>
+                    <button class="delete-btn" data-id="${contact.id}">Delete</button>
+                `;
+                contactsDiv.appendChild(contactDiv);
+            });
+
+            // Attach event listeners to "Edit" and "Delete" buttons
+            const editButtons = document.querySelectorAll(".edit-btn");
+            const deleteButtons = document.querySelectorAll(".delete-btn");
+            editButtons.forEach(button => {
+                button.addEventListener("click", editContact);
+            });
+            deleteButtons.forEach(button => {
+                button.addEventListener("click", deleteContact);
+            });
+        }
+
+        // Function to edit a contact
+        function editContact(event) {
+            const contactID = event.target.getAttribute("data-id");
+            const nameElement = document.getElementById(`name-${contactID}`);
+            const emailElement = document.getElementById(`email-${contactID}`);
+            const phoneElement = document.getElementById(`phone-${contactID}`);
+
+            // Prompt the user to enter updated information
+            const newName = prompt("Enter new name:", nameElement.textContent);
+            const newEmail = prompt("Enter new email:", emailElement.textContent);
+            const newPhone = prompt("Enter new phone number:", phoneElement.textContent);
+
+            // Update the contact in the array
+            const index = contacts.findIndex(contact => contact.id == contactID);
+            if (index !== -1) {
+                contacts[index].name = newName;
+                contacts[index].email = newEmail;
+                contacts[index].phone = newPhone;
+            }
+
+            // Update the UI
+            nameElement.textContent = newName;
+            emailElement.textContent = newEmail;
+            phoneElement.textContent = newPhone;
+        }
+
+        // Function to delete a contact
+        function deleteContact(event) {
+            const contactID = event.target.getAttribute("data-id");
+            // Filter out the contact with the specified ID
+            contacts = contacts.filter(contact => contact.id != contactID);
+            displayContacts(); // Update the UI
+        }
+
+        // Initialize the page
+        displayContacts();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        <li>HELLO</li>
+        <li>WORLD</li>
+        <li>OTHER</li>
+      </ul>
+    
+      <script>
+        // Get the list of <li> elements
+        const liElements = document.querySelectorAll('li');
+    
+        // Check if there are at least two <li> elements
+        if (liElements.length >= 2) {
+          // Make the first <li> tag green
+          liElements[0].style.color = 'green';
+          
+          // Make the second <li> tag yellow
+          liElements[1].style.color = 'yellow';
+        }
+      </script>
+</body>
+</html>

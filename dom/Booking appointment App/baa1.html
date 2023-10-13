@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+</head>
+<body>
+    <form id="userForm">
+        <label for="nameInput">Name:</label>
+        <input type="text" id="nameInput" required>
+        <br>
+        <label for="emailInput">Email:</label>
+        <input type="email" id="emailInput" required>
+        <br>
+        <label for="ageInput">Age:</label>
+        <input type="number" id="ageInput" required>
+        <br>
+        <button type="submit" id="submitButton">Submit</button>
+    </form>
+
+    <script>
+        // Retrieve user details from local storage if available
+        const storedUserDetailsJSON = localStorage.getItem('userDetails');
+        let userDetails = {};
+
+        if (storedUserDetailsJSON) {
+            userDetails = JSON.parse(storedUserDetailsJSON);
+            populateFormWithUserDetails(userDetails);
+        }
+
+        // Function to populate the form with user details
+        function populateFormWithUserDetails(userDetails) {
+            document.getElementById('nameInput').value = userDetails.name;
+            document.getElementById('emailInput').value = userDetails.email;
+            document.getElementById('ageInput').value = userDetails.age;
+        }
+
+        // Function to handle the form submission
+        document.getElementById('userForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Get user details from the form
+            const name = document.getElementById('nameInput').value;
+            const email = document.getElementById('emailInput').value;
+            const age = parseInt(document.getElementById('ageInput').value);
+
+            // Create an object to store user details
+            const userDetails = {
+                name: name,
+                email: email,
+                age: age
+            };
+
+            // Store user details as a JSON string in local storage
+            localStorage.setItem('userDetails', JSON.stringify(userDetails));
+
+            alert('User details saved to local storage.');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="myForm">
+        <label for="textInput">Enter Text:</label>
+        <input type="text" id="textInput" required>
+        <br>
+        <button id="clickButton">Click</button>
+        <button id="mouseOverButton">Mouse Over</button>
+        <button id="mouseOutButton">Mouse Out</button>
+    </form>
+
+    <script>
+        // Function to handle the click event
+        document.getElementById('clickButton').addEventListener('click', function (event) {
+            event.preventDefault();
+            const input = document.getElementById('textInput').value;
+            console.log(`Click Event: ${input}`);
+        });
+
+        // Function to handle the mouseover event
+        document.getElementById('mouseOverButton').addEventListener('mouseover', function (event) {
+            event.preventDefault();
+            const input = document.getElementById('textInput').value;
+            console.log(`Mouse Over Event: ${input}`);
+        });
+
+        // Function to handle the mouseout event
+        document.getElementById('mouseOutButton').addEventListener('mouseout', function (event) {
+            event.preventDefault();
+            const input = document.getElementById('textInput').value;
+            console.log(`Mouse Out Event: ${input}`);
+        });
+
+        // Function to validate the form before submission
+        document.getElementById('myForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const input = document.getElementById('textInput').value;
+            
+            // Perform your validation here (e.g., check if the input meets certain criteria)
+            if (input.length < 3) {
+                alert("Input must be at least 3 characters long.");
+                return;
+            }
+
+            // If validation passes, you can submit the form or perform additional actions
+            // For this example, we'll just log the validated input
+            console.log(`Validated Input: ${input}`);
+        });
+    </script>
+</body>
+</html>

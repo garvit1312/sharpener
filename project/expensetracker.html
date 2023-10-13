@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+  <div class="container mt-5">
+    <h2>Expense Tracker</h2>
+    <form id="expenseForm">
+      <div class="form-group">
+        <label for="expenseAmount">Expense Amount</label>
+        <input type="number" class="form-control" id="expenseAmount" required>
+      </div>
+      <div class="form-group">
+        <label for="expenseDescription">Expense Description</label>
+        <input type="text" class="form-control" id="expenseDescription" required>
+      </div>
+      <div class="form-group">
+        <label for="expenseCategory">Expense Category</label>
+        <input type="text" class="form-control" id="expenseCategory" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Expense</button>
+    </form>
+    <div class="mt-4">
+      <h3>Expenses</h3>
+      <ul id="expenseList" class="list-group">
+        <!-- Expenses will be added here dynamically -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('expenseForm');
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const expenseAmount = document.getElementById('expenseAmount').value;
+        const expenseDescription = document.getElementById('expenseDescription').value;
+        const expenseCategory = document.getElementById('expenseCategory').value;
+        if (expenseAmount && expenseDescription && expenseCategory) {
+          const expense = {
+            amount: expenseAmount,
+            description: expenseDescription,
+            category: expenseCategory
+          };
+          let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+          expenses.push(expense);
+          localStorage.setItem('expenses', JSON.stringify(expenses));
+          displayExpenses();
+          form.reset();
+        } else {
+          alert('Please fill in all fields');
+        }
+      });
+
+      function displayExpenses() {
+        const expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+        const expenseList = document.getElementById('expenseList');
+        expenseList.innerHTML = '';
+        expenses.forEach((expense, index) => {
+          const li = document.createElement('li');
+          li.className = 'list-group-item d-flex justify-content-between align-items-center';
+          li.innerHTML = `
+            <span>Amount: $${expense.amount} - Description: ${expense.description} - Category: ${expense.category}</span>
+            <div>
+              <button type="button" class="btn btn-sm btn-primary mr-2" onclick="editExpense(${index})">Edit</button>
+              <button type="button" class="btn btn-sm btn-danger" onclick="deleteExpense(${index})">Delete</button>
+            </div>
+          `;
+          expenseList.appendChild(li);
+        });
+      }
+
+      displayExpenses();
+
+      window.deleteExpense = function(index) {
+        let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+        expenses.splice(index, 1);
+        localStorage.setItem('expenses', JSON.stringify(expenses));
+        displayExpenses();
+      };
+
+      window.editExpense = function(index) {
+        let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
+        const expense = expenses[index];
+        document.getElementById('expenseAmount').value = expense.amount;
+        document.getElementById('expenseDescription').value = expense.description;
+        document.getElementById('expenseCategory').value = expense.category;
+        expenses.splice(index, 1);
+        localStorage.setItem('expenses', JSON.stringify(expenses));
+        displayExpenses();
+      };
+    });
+  </script>
+</body>
+</html>
+
